@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2018",
+        "lib": ["es2018"],
+        "outDir": "./build",
+        "sourceMap": true,
+        "strict": true,
+        "declaration": true,
+        "rootDir": "."
+    },
+    "include": [
+        "**/*.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "build",
+        "gulpfile.js"
+    ]
+}

@@ -1,0 +1,6 @@
+{
+    "description": "this is a simple example",
+    "logging": {
+        "level": "info"
+    }
+}
