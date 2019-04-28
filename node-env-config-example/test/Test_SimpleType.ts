@@ -1,57 +1,77 @@
 import * as chai from "chai";
 import {SimpleType} from "../src/types/SimpleType";
 
-it("test create", () => {
+it("test to JSON", () => {
     const v1: SimpleType = new SimpleType();
-    chai.assert.isNotNull(v1, "fresh object is not null");
+    v1.strValue = "I am a test string";
+    v1.dateValue = new Date(2019, 3, 10);
+
+    const jsonStr = JSON.stringify(v1);
+    console.log (jsonStr);
+
+    const v2: SimpleType = SimpleType.buildFromJSON(jsonStr);
+    chai.assert.isTrue(SimpleType.equals(v1, v2));
+});
+
+it("test clone 1", () => {
+    const v1: SimpleType = new SimpleType();
+    v1.strValue = "I am a test string";
+    v1.dateValue = new Date(2019, 3, 10);
+
+    const v2: SimpleType = SimpleType.clone(v1);
+    chai.assert.isTrue(SimpleType.equals(v1, v2));
+});
+
+it("test clone 2", () => {
+    const v1: SimpleType = new SimpleType();
+    v1.strValue = "I am a test string";
+    v1.numValue = 4.1;
+
+    const v2: SimpleType = SimpleType.clone(v1);
+    chai.assert.isTrue(SimpleType.equals(v1, v2));
+});
+
+it("test not equal 1", () => {
+    const v1: SimpleType = new SimpleType();
+    v1.strValue = "I am a test string_";
+    v1.dateValue = new Date(2019, 3, 10);
 
     const v2: SimpleType = new SimpleType();
-    chai.assert.isTrue(v2.equals(v1));
-    chai.assert.isNotNull(v2.toString());
+    v2.strValue = "I am a test string";
+    v2.dateValue = new Date(2019, 3, 10);
 
-    chai.assert.deepEqual(v1, v2, "fresh objects are equal");
+    chai.assert.isFalse(SimpleType.equals(v1, v2));
 
-    v2.numValue = 5;
-    chai.assert.notDeepEqual(v1, v2, "modified objects are equal");
-    chai.assert.isNotTrue(v2.equals(v1));
-    chai.assert.isNotTrue(v1.equals(v2));
+    const v3: SimpleType = new SimpleType();
+    v3.dateValue = new Date(2018, 3, 10);
 
-    v1.numValue = 5;
-    chai.assert.deepEqual(v1, v2, "modified objects are not equal");
+    const v4: SimpleType = new SimpleType();
+    v4.dateValue = new Date(2018, 4, 10);
 
-    const v3: SimpleType = v2.clone();
-    chai.assert.deepEqual(v2, v3, "cloned objects are equal");
-    chai.assert.isTrue(v2.equals(v3));
-    chai.assert.isTrue(v3.equals(v2));
+    chai.assert.isFalse(SimpleType.equals(v3, v4));
 
 });
 
-it("test compare date type", () => {
+it("test not equal 2", () => {
     const v1: SimpleType = new SimpleType();
-    chai.assert.isNotNull(v1, "fresh object is not null");
+    v1.strValue = "I am a test string";
 
     const v2: SimpleType = new SimpleType();
-    chai.assert.isTrue(v2.equals(v1));
+    v2.strValue = "I am a test string";
+    v2.dateValue = new Date(2019, 3, 10);
+    v2.numValue = 2;
 
-    const now = new Date();
-    v1.dateValue = now;
-    chai.assert.isNotTrue(v2.equals(v1));
-    chai.assert.isNotTrue(v1.equals(v2));
-    v2.dateValue = now;
-    chai.assert.isTrue(v2.equals(v1));
+    chai.assert.isFalse(SimpleType.equals(v1, v2));
+});
 
-    const v1Cloned: SimpleType = v1.clone();
-    chai.assert.isTrue(v1.equals(v1Cloned));
+it("test not equal 3", () => {
+    const v1: SimpleType = new SimpleType();
+    v1.strValue = "I am a test string";
+    v1.dateValue = new Date(2019, 3, 10);
 
-    v1Cloned.dateValue = new Date();
-    v1Cloned.dateValue.setMilliseconds(30);
-    const dateCloned: any = v1Cloned.dateValue;
-    const timeCloned: any = v1Cloned.dateValue.getTime();
-    const milliSecondsCloned: any = v1Cloned.dateValue.getMilliseconds();
+    const v2: SimpleType = new SimpleType();
+    v2.strValue = "I am a test string";
+    v2.numValue = 2;
 
-    const dateOriginal: any = v1.dateValue;
-    const timeOriginal: any = v1.dateValue.getTime();
-    const milliOriginal: any = v1.dateValue.getMilliseconds();
-
-    chai.assert.isNotTrue(v1.equals(v1Cloned));
+    chai.assert.isFalse(SimpleType.equals(v1, v2));
 });

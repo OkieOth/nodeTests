@@ -12,7 +12,7 @@ log.cat1.info (() => "node-env-config-example is started");
 const printCompareResult = (v1: SimpleType, v2: SimpleType) => {
     log.cat1.info (() => `[printCompareResult] v1=${simpleType1.toString()}` );
     log.cat1.info (() => `[printCompareResult] v2=${simpleType1.toString()}` );
-    if (v1.equals(v2)) {
+    if (SimpleType.equals(v1, v2)) {
         log.cat1.info (() => `[printCompareResult] v1===v2` );
     } else {
         log.cat1.info (() => `[printCompareResult] v1!==v2` );
@@ -26,5 +26,5 @@ printCompareResult(simpleType1, simpleType2);
 
 simpleType2.numValue = 3;
 simpleType2.dateValue = new Date();
-log.cat2.info(() => `Date value: ${simpleType2.dateValue}` );
 printCompareResult(simpleType1, simpleType2);
+log.cat1.info (() => "done :)");
